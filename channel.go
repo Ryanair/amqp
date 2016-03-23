@@ -713,18 +713,21 @@ When noWait is true, the queue will assume to be declared on the server.  A
 channel exception will arrive if the conditions are met for existing queues
 or attempting to modify an existing queue from a different connection.
 
+Passive specifies if we should try and create a durable queue or reuse an
+existing one. If true, the client won't try to create one
+
 When the error return value is not nil, you can assume the queue could not be
 declared with these parameters and the channel will be closed.
 
 */
-func (me *Channel) QueueDeclare(name string, durable, autoDelete, exclusive, noWait bool, args Table) (Queue, error) {
+func (me *Channel) QueueDeclare(name string, durable, autoDelete, exclusive, noWait, passive bool, args Table) (Queue, error) {
 	if err := args.Validate(); err != nil {
 		return Queue{}, err
 	}
 
 	req := &queueDeclare{
 		Queue:      name,
-		Passive:    false,
+		Passive:    passive,
 		Durable:    durable,
 		AutoDelete: autoDelete,
 		Exclusive:  exclusive,
