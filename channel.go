@@ -1112,7 +1112,7 @@ to respond to any exceptions.
 Optional amqp.Table of arguments that are specific to the server's implementation of
 the exchange can be sent for exchange types that require extra parameters.
 */
-func (me *Channel) ExchangeDeclare(name, kind string, durable, autoDelete, internal, noWait bool, args Table) error {
+func (me *Channel) ExchangeDeclare(name, kind string, durable, autoDelete, internal, noWait, passive bool, args Table) error {
 	if err := args.Validate(); err != nil {
 		return err
 	}
@@ -1121,7 +1121,7 @@ func (me *Channel) ExchangeDeclare(name, kind string, durable, autoDelete, inter
 		&exchangeDeclare{
 			Exchange:   name,
 			Type:       kind,
-			Passive:    false,
+			Passive:    passive,
 			Durable:    durable,
 			AutoDelete: autoDelete,
 			Internal:   internal,
